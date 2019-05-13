@@ -153,7 +153,6 @@ def get_data(train=False):
                 data = batch[b'data']
             else:
                 data = np.concatenate([data, batch[b'data']])
-
             if i == 1:
                 labels = batch[b'labels']
             else:
@@ -161,6 +160,7 @@ def get_data(train=False):
 
         data_tmp = data
         labels_tmp = labels
+        # repeat n times for different masks
         for i in range(args.mask_num - 1):
             data = np.concatenate([data, data_tmp])
             labels = np.concatenate([labels, labels_tmp])
@@ -224,7 +224,6 @@ class CIFAR10_Dataset(Data.Dataset):
             img = transform_train(img)
         else:
             img = transform_test(img)
-
         if self.target_transform is not None:
             target = self.target_transform(label)
 
@@ -261,7 +260,6 @@ def train(epoch):
         loss.backward()
         optimizer.step()
 
-        # Bar visualization
         progress_bar(batch_idx, len(train_loader),
                      'Loss: %.3f | Acc: %.3f%% (%d/%d)'
                      % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
@@ -284,7 +282,6 @@ def test(epoch):
         total += targets.size(0)
         correct += pred_idx.eq(targets.data).cpu().sum().float()
 
-        # Bar visualization
         progress_bar(batch_idx, len(test_loader),
                      'Loss: %.3f | Acc: %.3f%% (%d/%d)'
                      % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
