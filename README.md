@@ -8,7 +8,7 @@ If you find the idea or code useful for your research, please cite our [paper](h
 ```
 @inproceedings{yang2019menet,
   title={ME-Net: Towards Effective Adversarial Robustness with Matrix Estimation},
-  author={Yang, Yuzhe and Zhang, Guo and Xu, Zhi and Katabi, Dina},
+  author={Yang, Yuzhe and Zhang, Guo and Katabi, Dina and Xu, Zhi},
   booktitle={Proceedings of the 36th International Conference on Machine Learning, {ICML} 2019},
   year={2019},
   month=jul,
