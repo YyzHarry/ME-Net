@@ -1,0 +1,12 @@
+cleverhans==3.0.1
+cvxpy==1.0.6
+foolbox==1.6.2
+keras==2.2.4
+knnimpute==0.1.0
+numpy==1.14.3
+opencv-python==3.4.3.18
+scipy==1.1.0
+scikit-learn==0.19.1
+tensorflow==1.10.1
+torch==0.4.1
+torchvision==0.2.1
