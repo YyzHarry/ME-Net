@@ -328,7 +328,7 @@ def spsa_attack():
     tf_model_fn = convert_pytorch_model_to_tf(menet_model)
     cleverhans_model = CallableModelWrapper(tf_model_fn, output_layer='logits')
 
-    # Create an SASP attack
+    # Create an SPSA attack
     spsa = SPSA(cleverhans_model, sess=sess)
     spsa_params = {
         'eps': config['epsilon'],
