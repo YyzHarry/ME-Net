@@ -115,6 +115,13 @@ class CIFAR10_testset(Data.Dataset):
 
 
 def nuclear_norm_solve(A, mask, mu):
+    """Nuclear norm minimization solver.
+
+    :param A: matrix to complete
+    :param mask: matrix with entries zero (if missing) or one (if present)
+    :param mu: control trade-off between nuclear norm and square loss
+    :return: completed matrix
+    """
     X = Variable(shape=A.shape)
     objective = Minimize(mu * norm(X, "nuc") + sum_squares(multiply(mask, X-A)))
     problem = Problem(objective, [])
@@ -123,6 +130,13 @@ def nuclear_norm_solve(A, mask, mu):
 
 
 class nucnorm(torch.autograd.Function):
+    """ME-Net layer with nuclear norm algorithm.
+
+    The ME preprocessing is embedded into a Function subclass for adversarial training.
+    ----------
+    Candès, J. and Recht, B. Exact matrix completion via convex optimization. 2009.
+    https://pytorch.org/docs/stable/notes/extending.html
+    """
 
     @staticmethod
     def forward(ctx, input):
@@ -161,6 +175,13 @@ class nucnorm(torch.autograd.Function):
 
 
 class usvt(torch.autograd.Function):
+    """ME-Net layer with universal singular value thresholding (USVT) approach.
+
+    The ME preprocessing is embedded into a Function subclass for adversarial training.
+    ----------
+    Chatterjee, S. et al. Matrix estimation by universal singular value thresholding. 2015.
+    https://pytorch.org/docs/stable/notes/extending.html
+    """
 
     @staticmethod
     def forward(ctx, input):
@@ -211,6 +232,13 @@ class usvt(torch.autograd.Function):
 
 
 class softimp(torch.autograd.Function):
+    """ME-Net layer with Soft-Impute approach.
+
+    The ME preprocessing is embedded into a Function subclass for adversarial training.
+    ----------
+    Mazumder, R. et al. Spectral regularization algorithms for learning large incomplete matrices. 2010.
+    https://pytorch.org/docs/stable/notes/extending.html
+    """
 
     @staticmethod
     def forward(ctx, input):
@@ -252,6 +280,15 @@ class softimp(torch.autograd.Function):
 
 
 class MENet(nn.Module):
+    """ME-Net layer.
+
+    To attack a trained ME-Net model, first load the checkpoint, then wrap the loaded model with ME layer.
+    Example:
+        model = checkpoint['model']
+        menet_model = MENet(model)
+    ----------
+    https://pytorch.org/docs/stable/notes/extending.html
+    """
     def __init__(self, model):
         super(MENet, self).__init__()
         self.model = model
