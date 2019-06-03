@@ -2,12 +2,13 @@
 
 This repository contains the implementation code for paper [ME-Net: Towards Effective Adversarial Robustness with Matrix Estimation](http://me-net.csail.mit.edu/) (__ICML 2019__).
 
-__ME-Net__ is a preprocessing-based defense method against adversarial examples. 
+__ME-Net__ is a preprocessing-based defense against adversarial examples, which is both model-agnostic and attack-agnostic. Being model-agnostic means ME-Net can easily be embedded into existing networks, and being attack-agnostic means ME-Net can improve robustness against a wide range of adversarial attacks.
+Specifically, we focus on the intrinsic _global structures_ (e.g., low-rank) within images, and leverage matrix estimation (ME) to exploit such structures.
+ME-Net achieves better adversarial robustness by reverting a noisy & incomplete image into a denoised version that maintains the underlying global structures in the clean image.
 
 ![overview](assets/menet_example.png)
 
 ## To do list
-- arXiv
 - 两个图，ME-CHANNEL 对比
 - 多个表，不同p 0.2-0.4, 0.4-0.6，USVT效果最好
 
