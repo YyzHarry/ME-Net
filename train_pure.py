@@ -27,6 +27,13 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def nuclear_norm_solve(A, mask, mu):
+    """Nuclear norm minimization solver.
+
+    :param A: matrix to complete
+    :param mask: matrix with entries zero (if missing) or one (if present)
+    :param mu: control trade-off between nuclear norm and square loss
+    :return: completed matrix
+    """
     X = Variable(shape=A.shape)
     objective = Minimize(mu * norm(X, "nuc") + sum_squares(multiply(mask, X-A)))
     problem = Problem(objective, [])
@@ -35,6 +42,15 @@ def nuclear_norm_solve(A, mask, mu):
 
 
 def nucnorm(img, maskp):
+    """Preprocessing with nuclear norm algorithm.
+
+    Data matrix is scaled between [-1, 1] before matrix estimation (and rescaled back after ME)
+    [Candès, J. and Recht, B. Exact matrix completion via convex optimization. 2009.]
+
+    :param img: original image
+    :param maskp: observation probability of each entry in mask matrix
+    :return: preprocessed image
+    """
     h, w, c = img.shape
     img = img.astype('float64') * 2 / 255 - 1
 
@@ -62,6 +78,15 @@ def nucnorm(img, maskp):
 
 
 def usvt(img, maskp):
+    """Preprocessing with universal singular value thresholding (USVT) approach.
+
+    Data matrix is scaled between [-1, 1] before matrix estimation (and rescaled back after ME)
+    [Chatterjee, S. et al. Matrix estimation by universal singular value thresholding. 2015.]
+
+    :param img: original image
+    :param maskp: observation probability of each entry in mask matrix
+    :return: preprocessed image
+    """
     h, w, c = img.shape
     img = img.astype('float64') * 2 / 255 - 1
 
@@ -105,6 +130,15 @@ def usvt(img, maskp):
 
 
 def softimp(img, maskp):
+    """Preprocessing with Soft-Impute approach.
+
+    Data matrix is scaled between [-1, 1] before matrix estimation (and rescaled back after ME)
+    [Mazumder, R. et al. Spectral regularization algorithms for learning large incomplete matrices. 2010.]
+
+    :param img: original image
+    :param maskp: observation probability of each entry in mask matrix
+    :return: preprocessed image
+    """
     h, w, c = img.shape
     img = img.astype('float64') * 2 / 255 - 1
 
@@ -209,7 +243,7 @@ class CIFAR10_Dataset(Data.Dataset):
             self.train_data = menet(self.train_data, train=True)
         else:
             self.test_data, self.test_labels = get_data()
-            self.test_data = self.test_data.reshape((10000, 3, 32, 32))
+            self.test_data = self.test_data.reshape((self.test_data.shape[0], 3, 32, 32))
             self.test_data = self.test_data.transpose((0, 2, 3, 1))
             self.test_data = menet(self.test_data, train=False)
 

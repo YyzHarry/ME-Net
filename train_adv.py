@@ -129,7 +129,7 @@ class CIFAR10_Dataset(Data.Dataset):
             self.train_data = self.train_data.transpose((0, 2, 3, 1))
         else:
             self.test_data, self.test_labels = get_data()
-            self.test_data = self.test_data.reshape((10000, 3, 32, 32))
+            self.test_data = self.test_data.reshape((self.test_data.shape[0], 3, 32, 32))
             self.test_data = self.test_data.transpose((0, 2, 3, 1))
 
     def __getitem__(self, index):
@@ -157,6 +157,13 @@ class CIFAR10_Dataset(Data.Dataset):
 
 
 def nuclear_norm_solve(A, mask, mu):
+    """Nuclear norm minimization solver.
+
+    :param A: matrix to complete
+    :param mask: matrix with entries zero (if missing) or one (if present)
+    :param mu: control trade-off between nuclear norm and square loss
+    :return: completed matrix
+    """
     X = Variable(shape=A.shape)
     objective = Minimize(mu * norm(X, "nuc") + sum_squares(multiply(mask, X-A)))
     problem = Problem(objective, [])
@@ -165,6 +172,13 @@ def nuclear_norm_solve(A, mask, mu):
 
 
 class nucnorm(torch.autograd.Function):
+    """ME-Net layer with nuclear norm algorithm.
+
+    The ME preprocessing is embedded into a Function subclass for adversarial training.
+    ----------
+    Candès, J. and Recht, B. Exact matrix completion via convex optimization. 2009.
+    https://pytorch.org/docs/stable/notes/extending.html
+    """
 
     @staticmethod
     def forward(ctx, input):
@@ -211,6 +225,13 @@ class nucnorm(torch.autograd.Function):
 
 
 class usvt(torch.autograd.Function):
+    """ME-Net layer with universal singular value thresholding (USVT) approach.
+
+    The ME preprocessing is embedded into a Function subclass for adversarial training.
+    ----------
+    Chatterjee, S. et al. Matrix estimation by universal singular value thresholding. 2015.
+    https://pytorch.org/docs/stable/notes/extending.html
+    """
 
     @staticmethod
     def forward(ctx, input):
@@ -268,6 +289,13 @@ class usvt(torch.autograd.Function):
 
 
 class softimp(torch.autograd.Function):
+    """ME-Net layer with Soft-Impute approach.
+
+    The ME preprocessing is embedded into a Function subclass for adversarial training.
+    ----------
+    Mazumder, R. et al. Spectral regularization algorithms for learning large incomplete matrices. 2010.
+    https://pytorch.org/docs/stable/notes/extending.html
+    """
 
     @staticmethod
     def forward(ctx, input):
@@ -317,6 +345,12 @@ class softimp(torch.autograd.Function):
 
 
 class MENet(nn.Module):
+    """ME-Net layer.
+
+    ME method is called by using the 'apply' method of different functions.
+    ----------
+    https://pytorch.org/docs/stable/notes/extending.html
+    """
     def __init__(self, model):
         super(MENet, self).__init__()
         self.model = model
@@ -327,6 +361,12 @@ class MENet(nn.Module):
 
 
 class AttackPGD(nn.Module):
+    """Adversarial training with PGD.
+
+    Adversarial examples are constructed using PGD under the L_inf bound.
+    ----------
+    Madry, A. et al. Towards deep learning models resistant to adversarial attacks. 2018.
+    """
     def __init__(self, model, config):
         super(AttackPGD, self).__init__()
         self.model = model
