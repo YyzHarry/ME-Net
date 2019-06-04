@@ -85,7 +85,7 @@ python train_adv.py --data-dir <path> \
     <optional-arguments>
 ```
 
-### Pre-generated Dataset
+### Pre-generated Datasets
 Since the first step for training a pure ME-Net model is to generate a new dataset (`--mask-num` times larger), which can be time-consuming for certain ME methods.
 We provide several pre-generated datasets with different observing probabilities and different ME methods (_will update soon_):
 
@@ -161,7 +161,7 @@ The following arguments are commonly used to perform white-box attacks:
 - `--mode`: use toolbox or pgd implementation: `toolbox` | `pgd` (default: `pgd`). Note that we provide the attack implementation using `Foolbox`, however it can not achieve as high attack success rate as the PGD implementation.
 
 
-### Pre-trained Model
+### Pre-trained Models
 We provide several pre-trained ME-Net models (with both purely and adversarially trained ones) on CIFAR-10. Note that for different attacks, models trained with different _p_ values can perform differently. More details can be found in [our paper](https://arxiv.org/abs/1905.11971) (_we will release the pre-trained models soon_):
 
 Since the saved model contains no information about the ME-Net preprocessing, one should wrap the loaded model with ME layer. An example to load pre-trained models:
@@ -185,7 +185,7 @@ net.eval()
 ### Images are approximately low-rank
 ![menet_results_1](assets/menet_results_1.png)
 
-### Qualitative and quantitative results against black-box attack
+### Qualitative and quantitative results against black-box attacks
 ![menet_results_2](assets/menet_results_2.png)
 
 ### Adversarial robustness under PGD-based BPDA white-box attacks
