@@ -19,8 +19,8 @@ pip install -r requirements.txt
 ## Main Files
 The code provided in this repository is able to do the following tasks:
 
-- [`train_pure.py`](train_pure.py): Train an ME-Net model with standard SGD.
-- [`train_adv.py`](train_adv.py): Train an ME-Net model with adversarial training. We mainly focus on PGD-based adversarial training under L_infinity perturbation bound.
+- [`train_pure.py`](train_pure.py): Train a ME-Net model with standard SGD.
+- [`train_adv.py`](train_adv.py): Train a ME-Net model with adversarial training. We mainly focus on PGD-based adversarial training under L_infinity perturbation bound.
 - [`attack_blackbox.py`](attack_blackbox.py): Perform black-box attacks on trained ME-Net model. We provide three kinds of black-box attacks, including transfer-based attack (i.e., using [FGSM](https://arxiv.org/abs/1412.6572), [PGD](https://arxiv.org/abs/1706.06083) and [CW](https://arxiv.org/abs/1608.04644)), decision-based attack (i.e., [Boundary attack](https://arxiv.org/abs/1712.04248)), and score-based attack (i.e., [SPSA](https://arxiv.org/abs/1802.05666)).
 - [`attack_whitebox.py`](attack_whitebox.py): Perform white-box attacks on trained ME-Net model. We mainly focus on white-box adversarial robustness against L_infinity bounded PGD attack.
 
@@ -128,7 +128,7 @@ python attack_blackbox.py --data-dir <path> \
 ```
 The following arguments are commonly used to perform black-box attacks:
 - `--data-dir`: directory path to read data.
-- `--save-dir`: directory path to load saved model checkpoints.
+- `--ckpt-dir`: directory path to load saved model checkpoints.
 - `--name`: the name of saved checkpoints.
 - `--maskp`: the probability of mask sampling (note that for ME-Net inference we simply use the average of masking probabilities during training; one can also play with other choices such as a randomly sampled one).
 - `--source`: the source model of transfer-based black-box attacks.
@@ -150,11 +150,11 @@ python attack_whitebox.py --data-dir <path> \
     --iter 1000 \
     <optional-arguments>
 ```
-The following arguments are commonly used to perform black-box attacks:
+The following arguments are commonly used to perform white-box attacks:
 - `--data-dir`: directory path to read data.
-- `--save-dir`: directory path to load saved model checkpoints.
+- `--ckpt-dir`: directory path to load saved model checkpoints.
 - `--name`: the name of saved checkpoints.
-- `--maskp`: the probability of mask sampling (note that for ME-Net inference we simply use the average of masking probabilities during training; one can also play with other choices like a randomly sampled one).
+- `--maskp`: the probability of mask sampling (note that for ME-Net inference we simply use the average of masking probabilities during training; one can also play with other choices such as a randomly sampled one).
 - `--attack`: perform adversarial attacks (default: `True`).
 - `--epsilon`: the upper bound change of L-inf norm on input pixels (default: `8`).
 - `--iter`: the number of iterations for iterative attacks (default: `1000`).
