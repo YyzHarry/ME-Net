@@ -34,9 +34,9 @@ Matrix estimation is a well studied topic with a number of established ME techni
 - The [Soft-Impute](http://www.jmlr.org/papers/v11/mazumder10a.html) algorithm
 - The [nuclear norm minimization](https://arxiv.org/abs/0805.4471) algorithm
 
-Note that one could either view the three RGB channels separately as independent matrices or jointly by concatenating them into one matrix. The main paper follows the latter approach, we here provide an argument `--me-channel` to choose how you want to operate on the channels for ME. We provide comparison between the two methods later.
+Note that one could either view the three RGB channels separately as independent matrices or jointly by concatenating them into one matrix. While the main paper follows the latter approach, we here provide an argument `--me-channel` to choose how you want to operate on the channels for ME. We provide comparison between the two methods later.
 
-As ME-Net uses different masked realization of each image during training, we use the following method to generate masks with different observing probability: for each image, we select `--mask-num` masks in total with observing probability ranging from `--startp` to `--endp` with equal intervals. 
+As ME-Net uses different masked realizations of each image during training, we use the following method to generate masks with different observing probability: for each image, we select `--mask-num` masks in total with observing probability ranging from `--startp` to `--endp` with equal intervals. 
 
 ### Common Arguments
 The following arguments are used by scripts for training ME-Net, including [`train_pure.py`](train_pure.py), and [`train_adv.py`](train_adv.py):
@@ -55,8 +55,8 @@ The following arguments are used by scripts for training ME-Net, including [`tra
 - `--mask-num`: the number of sampled masks (default: `10`).
 
 #### ME parameters
-- `--me-channel`: view RGB channels separately as independent matrices, or jointly by concatenating: `separate`, `concat` (default: `concat`).
-- `--me-type`: choose which method to use for matrix estimation: `usvt`, `softimp`, `nucnorm` (default: `usvt`).
+- `--me-channel`: view RGB channels separately as independent matrices, or jointly by concatenating: `separate` | `concat` (default: `concat`).
+- `--me-type`: choose which method to use for matrix estimation: `usvt` | `softimp` | `nucnorm` (default: `usvt`).
 
 
 ### Train ME-Net with Standard SGD
@@ -116,7 +116,7 @@ class CIFAR10_Dataset(Data.Dataset):
 
 ## Evaluate ME-Net
 
-### Black-box Attack
+### Black-box Attacks
 To perform a black-box attack on a trained ME-Net model, for example, using `spsa` attack with `2048` samples:
 ```bash
 python attack_blackbox.py --data-dir <path> \
@@ -130,7 +130,7 @@ The following arguments are commonly used to perform black-box attacks:
 - `--data-dir`: directory path to read data.
 - `--save-dir`: directory path to load saved model checkpoints.
 - `--name`: the name of saved checkpoints.
-- `--maskp`: the probability of mask sampling (note that for ME-Net inference we simply use the average of masking probabilities during training; one can also play with other choices like a randomly sampled one).
+- `--maskp`: the probability of mask sampling (note that for ME-Net inference we simply use the average of masking probabilities during training; one can also play with other choices such as a randomly sampled one).
 - `--source`: the source model of transfer-based black-box attacks.
 - `--attack-type`: `fgsm` | `pgd` | `cw` | `spsa` | `boundary`.
 - `--epsilon`: the upper bound change of L-inf norm on input pixels (default: `8`).
@@ -139,7 +139,7 @@ The following arguments are commonly used to perform black-box attacks:
 - `--spsa-sample`: the number of SPSA samples for SPSA attack (default: `2048`).
 
 
-### White-box Attack
+### White-box Attacks
 To perform a white-box attack on a trained ME-Net model, for example, using `1000` steps PGD-based [BPDA](https://arxiv.org/abs/1802.00420) attack:
 ```bash
 python attack_whitebox.py --data-dir <path> \
@@ -162,9 +162,9 @@ The following arguments are commonly used to perform black-box attacks:
 
 
 ### Pre-trained Model
-We provide several pre-trained ME-Net model (with both purely and adversarially trained ones) on CIFAR-10. Note that for different attacks, models trained with different _p_ values can perform differently. More details can be found in [our paper](arxiv) (_we will release the pre-trained models soon_):
+We provide several pre-trained ME-Net models (with both purely and adversarially trained ones) on CIFAR-10. Note that for different attacks, models trained with different _p_ values can perform differently. More details can be found in [our paper](https://arxiv.org/abs/1905.11971) (_we will release the pre-trained models soon_):
 
-Since the saved model only contains information about the original model, one should warp the loaded model with ME layer. An example to load pre-trained models:
+Since the saved model contains no information about the ME-Net preprocessing, one should wrap the loaded model with ME layer. An example to load pre-trained models:
 ```python
 # black-box attacks
 model = checkpoint['model']
@@ -198,7 +198,7 @@ We use standard adversarial attack packages [Foolbox](https://github.com/bethgel
 
 
 ## Citation
-If you find the idea or code useful for your research, please cite our [paper](https://arxiv.org/abs/1905.11971):
+If you find the idea or code useful for your research, please cite [our paper](https://arxiv.org/abs/1905.11971):
 ```
 @inproceedings{yang2019menet,
   title={ME-Net: Towards Effective Adversarial Robustness with Matrix Estimation},
