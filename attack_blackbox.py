@@ -421,7 +421,7 @@ if __name__ == '__main__':
     model.eval()
     model = model.to(device)
     menet_model = MENet(model)
-	menet_model.eval()
+    menet_model.eval()
 
     # Baseline
     checkpoint = torch.load(args.ckpt_dir + args.source + '.ckpt')
@@ -429,7 +429,7 @@ if __name__ == '__main__':
     source.eval()
     source = source.to(device)
     source_model = MENet(source)
-	source_model.eval()
+    source_model.eval()
 
     # score-based attack
     if args.attack_type == 'spsa':
