@@ -162,7 +162,13 @@ The following arguments are commonly used to perform white-box attacks:
 
 
 ### Pre-trained Models
-We provide several pre-trained ME-Net models (with both purely and adversarially trained ones) on CIFAR-10. Note that for different attacks, models trained with different _p_ values can perform differently. More details can be found in [our paper](https://arxiv.org/abs/1905.11971) (_we will release the pre-trained models soon_):
+We provide several pre-trained ME-Net models (with both purely and adversarially trained ones) on CIFAR-10 with USVT method. Note that for different attacks, models trained with different _p_ values can perform differently (more details can be found in [our paper](https://arxiv.org/abs/1905.11971)):
+
+- [CIFAR-10 | USVT | 0.5 | Pure | concat](https://drive.google.com/file/d/1Wo0lEyKeoRgZRDGNKnZg4zgZom10U-42/view?usp=sharing)
+- [CIFAR-10 | USVT | 0.5 | Adv-train | concat](https://drive.google.com/file/d/1bzTX8hoctduIM2lQdNVflXnjFb-3CpjE/view?usp=sharing)
+- [CIFAR-10 | USVT | 0.9 | Pure | concat](https://drive.google.com/file/d/108rKlyGV1RSn3Hd5V8-BWtgA8-Sgdd9t/view?usp=sharing)
+- [CIFAR-10 | USVT | 0.3 | Pure | concat](https://drive.google.com/file/d/1fM-zF3IICXCH0kkXsZ9fKGQTMAmahbJF/view?usp=sharing)
+- [CIFAR-10 | USVT | 0.3 | Adv-train | concat](https://drive.google.com/file/d/17tbbyi6x5YPDMpS0_j9ceJEkeCW6zMYD/view?usp=sharing)
 
 Since the saved model contains no information about the ME-Net preprocessing, one should wrap the loaded model with ME layer. An example to load pre-trained models:
 ```python
@@ -199,12 +205,11 @@ We use standard adversarial attack packages [Foolbox](https://github.com/bethgel
 
 ## Citation
 If you find the idea or code useful for your research, please cite [our paper](https://arxiv.org/abs/1905.11971):
-```
+```bib
 @inproceedings{yang2019menet,
-  title={ME-Net: Towards Effective Adversarial Robustness with Matrix Estimation},
+  title={{ME-Net}: Towards Effective Adversarial Robustness with Matrix Estimation},
   author={Yang, Yuzhe and Zhang, Guo and Katabi, Dina and Xu, Zhi},
-  booktitle={Proceedings of the 36th International Conference on Machine Learning, {ICML} 2019},
+  booktitle={Proceedings of the 36th International Conference on Machine Learning (ICML)},
   year={2019},
-  url={https://arxiv.org/abs/1905.11971},
 }
 ```
