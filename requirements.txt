@@ -1,7 +1,7 @@
 cleverhans==3.0.1
 cvxpy==1.0.6
 foolbox==1.6.2
-keras==2.2.4
+keras==3.12.0
 knnimpute==0.1.0
 numpy==1.14.3
 opencv-python==3.4.3.18
